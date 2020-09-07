@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-09-06T12:51:16.260Z</updated>
+  <updated>2020-09-07T13:56:42.345Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>第一篇博文</title>
+    <link href="http://example.com/2020/09/07/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E6%96%87/"/>
+    <id>http://example.com/2020/09/07/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E6%96%87/</id>
+    <published>2020-09-07T12:27:47.000Z</published>
+    <updated>2020-09-07T13:56:42.345Z</updated>
+    
+    <content type="html"><![CDATA[<img src= "/img/loading.gif" data-src="/2020/09/07/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E6%96%87/1.jpg" class title="This is an image"><p>这是我的第一篇个人博客，作为来上海的新的开始，主要用于记录个人技术，用于提高个体技术栈希望以后可以坚持把博客写下去，以此共勉。加油！！！</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;img src= &quot;/img/loading.gif&quot; data-src=&quot;/2020/09/07/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E6%96%87/1.jpg&quot; class title=&quot;This is an image&quot;&gt;
+&lt;p&gt;这</summary>
+      
+    
+    
+    
+    <category term="随笔" scheme="http://example.com/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+    <category term="日记" scheme="http://example.com/tags/%E6%97%A5%E8%AE%B0/"/>
+    
+    <category term="记录" scheme="http://example.com/tags/%E8%AE%B0%E5%BD%95/"/>
+    
+  </entry>
   
   <entry>
     <title>Hello World</title>
