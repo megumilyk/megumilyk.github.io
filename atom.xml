@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-09-07T14:07:38.276Z</updated>
+  <updated>2020-09-08T14:37:08.683Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,70 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>kafka集群安装部署</title>
+    <link href="http://example.com/2020/09/08/kafka%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/"/>
+    <id>http://example.com/2020/09/08/kafka%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/</id>
+    <published>2020-09-08T12:30:27.000Z</published>
+    <updated>2020-09-08T14:37:08.683Z</updated>
+    
+    <content type="html"><![CDATA[<p>kafka集群部署依赖于zk的部署，这里默认zk集群已经搭建zk集群ip分别为：</p><p>192.168.1.100 server.1，192.168.1.101 server.2，192.168.1.102 server.3</p><p>修改kafka配置文件，每个节点的broker.id 唯一</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">broker.id&#x3D;1</span><br><span class="line">zookeeper.connect&#x3D;192.168.1.100:2181,192.168.1.101:2181,192.168.1.102:2181</span><br></pre></td></tr></table></figure><p>启动集群，可以把kafka添加进环境变量</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup kafka-server-start.sh 配置文件地址 &amp;&gt;&gt; 日志地址 &amp;</span><br></pre></td></tr></table></figure><p>测试集群</p><p>在其中一台虚拟机创建topic</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kafka-topics.sh --create --zookeeper zkip:2181 --replication-factor 3 --partitions 1 --topic <span class="built_in">test</span>-topic</span><br></pre></td></tr></table></figure><p>查看创建的topic信息</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kafka-topics.sh --describe --zookeeper 本地ip:2181 --topic test-topic</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;kafka集群部署依赖于zk的部署，这里默认zk集群已经搭建zk集群ip分别为：&lt;/p&gt;
+&lt;p&gt;192.168.1.100 server.1，192.168.1.101 server.2，192.168.1.102 server.3&lt;/p&gt;
+&lt;p&gt;修改kafka配置文件，每</summary>
+      
+    
+    
+    
+    <category term="工作" scheme="http://example.com/categories/%E5%B7%A5%E4%BD%9C/"/>
+    
+    
+    <category term="日记" scheme="http://example.com/tags/%E6%97%A5%E8%AE%B0/"/>
+    
+    <category term="kafka" scheme="http://example.com/tags/kafka/"/>
+    
+    <category term="Linux" scheme="http://example.com/tags/Linux/"/>
+    
+    <category term="集群" scheme="http://example.com/tags/%E9%9B%86%E7%BE%A4/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>zookeeper集群安装部署</title>
+    <link href="http://example.com/2020/09/08/zookeeper%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/"/>
+    <id>http://example.com/2020/09/08/zookeeper%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2/</id>
+    <published>2020-09-08T12:29:12.000Z</published>
+    <updated>2020-09-08T14:37:10.985Z</updated>
+    
+    <content type="html"><![CDATA[<p>昨天了解了工作的大致内容，主要是有关中间件部署运维的内容。今天尝试在3台虚拟机上安装zookeeper集群。因为工作地点是在银行内部无法连接外网，所以用的所有部署软件都是来自内部维护的公共资源库中拉取。</p><p>以下是zookeeper的安装步骤</p><p>###1. 安装jdk<br>首先获取jdk安装包 </p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget jdk下载路径</span><br></pre></td></tr></table></figure><p>解压安装包，今天这里遇到了一个坑就是下载的jdk压缩包是.gz结尾的不是.tar.gz，所以上网查了资料说是用gunzip 解压，结果用gunzip解压后压根不行，也不知道是什么原因。最后使用tar进行的解压，完美运行。刚开始也是用的tar命令一直报错，好像是没加权限。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tar zvf jdk1.8.gz </span><br></pre></td></tr></table></figure><p>解压完成后就是配置环境变量了，具体配置就不展开写了，网上随便找。就是修改/etc/profile文件，所以的环境变量都是在这个文件里面配置的。配置完成后需要执行以下命令载入配置。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure><p>最后验证jdk是否成功安装,在终端直接输入以下命令，出现版本就是成功安装。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure><h3 id="2-配置zookeeper"><a href="#2-配置zookeeper" class="headerlink" title="2.配置zookeeper"></a>2.配置zookeeper</h3><p>下载zookeeper，解压，在解压后的目录里面新建一个zk_data文件夹，文件夹也可以在其他地方建（可以不建，但不推荐）记住文件夹的地址就行。</p><p>找到配置文件修改，配置文件一般放在conf目录下。因为我用的是kafka自带的zookeeper，在conf中的zookeeper.properties中，如果是单独下配置文件是zoo_sample.cfg，集群里面的配置都一样，所以修改好一个其他的CV就行了。</p><p>修改配置文件</p><p>修改dataDir： zk_data文件夹目录地址</p><p>最后在下面添加以下内容</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">server.1=ip1:2888:3888</span><br><span class="line">server.2=ip2:2888:3888</span><br><span class="line">server.3=ip3:2888:3888</span><br><span class="line">...</span><br></pre></td></tr></table></figure><p>然后在zk_data下贱一个myid的文件，在里面写上1（server点的编号，也可以是abc server.a,server.b）就行了,每一台集群的机器都要添加一个myid文件。注意不要重复。ip就是集群的ip地址，端口2888是用于zookeeper通信选取leader的，</p><p>3888是zookeeper服务器的通信端口。这两个端口不要动</p><p>到这里集群的配置就已经结束了。有条件的可以把zk添加进环境变量中，这样方便使用。</p><h3 id="3-启动服务"><a href="#3-启动服务" class="headerlink" title="3.启动服务"></a>3.启动服务</h3><p>依次启动各个节点的zookeeper</p><p>启动完成后查看节点状态</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="built_in">stat</span>|nc 127.0.0.1 2181</span><br></pre></td></tr></table></figure><p>来查看哪个节点被选择作为follower或者leader</p><p>其他排错命令</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ps aux|grep zookeeper <span class="comment">#查看zk进程</span></span><br><span class="line">nc -zv ip 端口 <span class="comment">#端口测试</span></span><br><span class="line">nohup ./zkServer.sh start &amp; <span class="comment">#后台启动zk</span></span><br><span class="line"><span class="built_in">echo</span> ruok|nc 127.0.0.1 2181 <span class="comment">#测试是否启动了该Server，若回复imok表示已经启动。</span></span><br><span class="line"><span class="built_in">echo</span> cons | nc 127.0.0.1 2181 <span class="comment">#列出所有连接到服务器的客户端的完全的连接 / 会话的详细信息。</span></span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;昨天了解了工作的大致内容，主要是有关中间件部署运维的内容。今天尝试在3台虚拟机上安装zookeeper集群。因为工作地点是在银行内部无法连接外网，所以用的所有部署软件都是来自内部维护的公共资源库中拉取。&lt;/p&gt;
+&lt;p&gt;以下是zookeeper的安装步骤&lt;/p&gt;
+&lt;p&gt;###</summary>
+      
+    
+    
+    
+    <category term="工作" scheme="http://example.com/categories/%E5%B7%A5%E4%BD%9C/"/>
+    
+    
+    <category term="日记" scheme="http://example.com/tags/%E6%97%A5%E8%AE%B0/"/>
+    
+    <category term="Linux" scheme="http://example.com/tags/Linux/"/>
+    
+    <category term="集群" scheme="http://example.com/tags/%E9%9B%86%E7%BE%A4/"/>
+    
+    <category term="zookeeper" scheme="http://example.com/tags/zookeeper/"/>
+    
+  </entry>
   
   <entry>
     <title>第一篇博文</title>
